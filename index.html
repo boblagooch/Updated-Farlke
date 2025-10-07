@@ -405,7 +405,7 @@
         .scoring-guide {
             background: var(--card-bg);
             border-radius: 15px;
-            margin-top: 10px;
+            margin-bottom: 10px;
             box-shadow: var(--shadow);
             flex-shrink: 0;
         }
@@ -916,6 +916,34 @@
             <button class="btn" onclick="resumeGame()" id="resumeBtn" style="display: none;">Resume Last Game</button>
         </div>
 
+        <div class="scoring-guide">
+            <div class="scoring-guide-header" onclick="toggleScoringGuide()">
+                <h3>📋 Scoring Reference</h3>
+                <span class="toggle-icon" id="scoringToggleIcon">▼</span>
+            </div>
+            <div class="scoring-content" id="scoringContent">
+                <div class="scoring-list">
+                    <div>Single 1 = 100 pts</div>
+                    <div>Single 5 = 50 pts</div>
+                    <div>Three 1s = 1,000 pts</div>
+                    <div>Three 2s = 200 pts</div>
+                    <div>Three 3s = 300 pts</div>
+                    <div>Three 4s = 400 pts</div>
+                    <div>Three 5s = 500 pts</div>
+                    <div>Three 6s = 600 pts</div>
+                    <div>Six 1s = 10,000 pts</div>
+                    <div>Six 2s = 400 pts</div>
+                    <div>Six 3s = 600 pts</div>
+                    <div>Six 4s = 800 pts</div>
+                    <div>Six 5s = 1,000 pts</div>
+                    <div>Six 6s = 1,200 pts</div>
+                    <div>Three pairs = 750 pts</div>
+                    <div>Straight (1-6) = 1,500 pts</div>
+                    <div><strong>3 Farkles in a row = -1,000 pts</strong></div>
+                </div>
+            </div>
+        </div>
+
         <div class="turn-indicator" id="turnIndicator" style="display: none;">
             <span id="turnText"></span>
             <button class="quit-btn" onclick="quitGame()">Quit Game</button>
@@ -969,34 +997,6 @@
             <h2>🎉 Game Over!</h2>
             <p id="winnerText"></p>
             <button class="btn" onclick="resetGame()">New Game</button>
-        </div>
-        
-        <div class="scoring-guide">
-            <div class="scoring-guide-header" onclick="toggleScoringGuide()">
-                <h3>📋 Scoring Reference</h3>
-                <span class="toggle-icon" id="scoringToggleIcon">▼</span>
-            </div>
-            <div class="scoring-content" id="scoringContent">
-                <div class="scoring-list">
-                    <div>Single 1 = 100 pts</div>
-                    <div>Single 5 = 50 pts</div>
-                    <div>Three 1s = 1,000 pts</div>
-                    <div>Three 2s = 200 pts</div>
-                    <div>Three 3s = 300 pts</div>
-                    <div>Three 4s = 400 pts</div>
-                    <div>Three 5s = 500 pts</div>
-                    <div>Three 6s = 600 pts</div>
-                    <div>Six 1s = 10,000 pts</div>
-                    <div>Six 2s = 400 pts</div>
-                    <div>Six 3s = 600 pts</div>
-                    <div>Six 4s = 800 pts</div>
-                    <div>Six 5s = 1,000 pts</div>
-                    <div>Six 6s = 1,200 pts</div>
-                    <div>Three pairs = 750 pts</div>
-                    <div>Straight (1-6) = 1,500 pts</div>
-                    <div><strong>3 Farkles in a row = -1,000 pts</strong></div>
-                </div>
-            </div>
         </div>
     </div>
     
@@ -1271,6 +1271,9 @@
                     turnText.textContent = `🎲 ${gameState.player1.name}'s Turn`;
                     turnIndicator.classList.remove('final-round');
                 }
+                
+                // Auto-focus player 1's input
+                setTimeout(() => document.getElementById('player1Input').focus(), 100);
             } else {
                 p2Card.classList.add('active');
                 p2Card.classList.remove('inactive');
@@ -1284,6 +1287,9 @@
                     turnText.textContent = `🎲 ${gameState.player2.name}'s Turn`;
                     turnIndicator.classList.remove('final-round');
                 }
+                
+                // Auto-focus player 2's input
+                setTimeout(() => document.getElementById('player2Input').focus(), 100);
             }
             
             // Clear inputs
