@@ -715,19 +715,22 @@
             }
             
             .score-input input {
-                padding: 48px;
-                font-size: 16px;
+                padding: 28px;
+                font-size: 18px;
+                font-weight: 500;
             }
             
             .score-input button {
-                padding: 70px 12px;
-                font-size: 13px;
+                padding: 36px 12px;
+                font-size: 16px;
+                font-weight: bold;
             }
             
             .btn {
-                font-size: 14px;
-                padding: 60px 16px;
+                font-size: 17px;
+                padding: 26px 16px;
                 margin: 6px 0;
+                font-weight: bold;
             }
             
             .undo-btn {
@@ -966,7 +969,7 @@
                 </div>
                 <div class="last-action" id="player1LastAction"></div>
                 <div class="score-input">
-                    <input type="number" id="player1Input" placeholder="Enter turn score" min="0" max="10000" 
+                    <input type="number" id="player1Input" placeholder="Enter turn score" min="0" max="20000" 
                            inputmode="numeric" pattern="[0-9]*">
                     <button onclick="addScore(1)">Add & End Turn</button>
                 </div>
@@ -987,7 +990,7 @@
                 </div>
                 <div class="last-action" id="player2LastAction"></div>
                 <div class="score-input">
-                    <input type="number" id="player2Input" placeholder="Enter turn score" min="0" max="10000"
+                    <input type="number" id="player2Input" placeholder="Enter turn score" min="0" max="20000"
                            inputmode="numeric" pattern="[0-9]*">
                     <button onclick="addScore(2)">Add & End Turn</button>
                 </div>
@@ -1096,9 +1099,9 @@
         }
 
         function isValidScore(score) {
-            // Must end in 00 or 50, and be between 0 and 10000
+            // Must end in 00 or 50, and be between 0 and 20000 (hot dice allows very high scores)
             if (score === 0) return true;
-            if (score < 50 || score > 10000) return false;
+            if (score < 50 || score > 20000) return false;
             const lastTwoDigits = score % 100;
             return lastTwoDigits === 0 || lastTwoDigits === 50;
         }
