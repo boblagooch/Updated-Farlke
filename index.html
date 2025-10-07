@@ -1523,62 +1523,74 @@
         }
 
         function checkWinner() {
-            // Check if someone has reached 10,000
-            if (!gameState.finalRoundTriggered && (gameState.player1.score >= 10000 || gameState.player2.score >= 10000)) {
-                gameState.finalRoundTriggered = true;
-                if (gameState.player1.score >= 10000) {
-                    gameState.finalRoundTriggeredBy = 1;
-                } else {
-                    gameState.finalRoundTriggeredBy = 2;
+            // If Player 2 reaches 10k+, they win immediately (end of round)
+            if (!gameState.finalRoundTriggered && gameState.player2.score >= 10000) {
+                gameState.gameEnded = true;
+                showVictoryMessage(gameState.player2.name, gameState.player1.name);
+                saveWinRecord(gameState.player2.name);
+                
+                document.getElementById('winnerText').textContent = 
+                    `${gameState.player2.name} wins with ${gameState.player2.score.toLocaleString()} points!`;
+                    
+                setTimeout(() => {
+                    document.getElementById('winner').style.display = 'block';
+                    document.getElementById('gameBoard').style.display = 'none';
+                    document.getElementById('historyFab').style.display = 'none';
+                    document.getElementById('turnIndicator').style.display = 'none';
+                }, 2000);
+                
+                try {
+                    localStorage.removeItem('farkle_gameState');
+                } catch(e) {
+                    // localStorage might be blocked
                 }
-                saveGameState();
-                return; // Continue game, don't end yet
+                return;
             }
             
-            // If final round was triggered and the other player has had their turn
-            if (gameState.finalRoundTriggered) {
-                const otherPlayer = gameState.finalRoundTriggeredBy === 1 ? 2 : 1;
+            // If Player 1 reaches 10k+, trigger final round for Player 2
+            if (!gameState.finalRoundTriggered && gameState.player1.score >= 10000) {
+                gameState.finalRoundTriggered = true;
+                gameState.finalRoundTriggeredBy = 1;
+                saveGameState();
+                return; // Continue game, P2 gets final turn
+            }
+            
+            // If final round was triggered and Player 2 has finished their turn
+            if (gameState.finalRoundTriggered && gameState.currentPlayer !== gameState.finalRoundTriggeredBy) {
+                // Determine winner by score
+                let winner, loser;
+                if (gameState.player1.score > gameState.player2.score) {
+                    winner = gameState.player1.name;
+                    loser = gameState.player2.name;
+                } else if (gameState.player2.score > gameState.player1.score) {
+                    winner = gameState.player2.name;
+                    loser = gameState.player1.name;
+                } else {
+                    winner = "It's a tie";
+                    loser = "";
+                }
                 
-                // Check if we just finished the other player's turn
-                // This happens after endTurn() when currentPlayer has switched
-                const justFinishedPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+                gameState.gameEnded = true;
                 
-                if (justFinishedPlayer === otherPlayer) {
-                    // Other player has had their final turn, determine winner
-                    let winner, loser;
-                    if (gameState.player1.score > gameState.player2.score) {
-                        winner = gameState.player1.name;
-                        loser = gameState.player2.name;
-                    } else if (gameState.player2.score > gameState.player1.score) {
-                        winner = gameState.player2.name;
-                        loser = gameState.player1.name;
-                    } else {
-                        winner = "It's a tie";
-                        loser = "";
-                    }
+                if (loser) {
+                    showVictoryMessage(winner, loser);
+                    saveWinRecord(winner);
+                }
+                
+                document.getElementById('winnerText').textContent = 
+                    `${winner} wins with ${Math.max(gameState.player1.score, gameState.player2.score).toLocaleString()} points!`;
                     
-                    gameState.gameEnded = true;
-                    
-                    if (loser) {
-                        showVictoryMessage(winner, loser);
-                        saveWinRecord(winner);
-                    }
-                    
-                    document.getElementById('winnerText').textContent = 
-                        `${winner} wins with ${Math.max(gameState.player1.score, gameState.player2.score).toLocaleString()} points!`;
-                        
-                    setTimeout(() => {
-                        document.getElementById('winner').style.display = 'block';
-                        document.getElementById('gameBoard').style.display = 'none';
-                        document.getElementById('historyFab').style.display = 'none';
-                        document.getElementById('turnIndicator').style.display = 'none';
-                    }, 2000);
-                    
-                    try {
-                        localStorage.removeItem('farkle_gameState');
-                    } catch(e) {
-                        // localStorage might be blocked
-                    }
+                setTimeout(() => {
+                    document.getElementById('winner').style.display = 'block';
+                    document.getElementById('gameBoard').style.display = 'none';
+                    document.getElementById('historyFab').style.display = 'none';
+                    document.getElementById('turnIndicator').style.display = 'none';
+                }, 2000);
+                
+                try {
+                    localStorage.removeItem('farkle_gameState');
+                } catch(e) {
+                    // localStorage might be blocked
                 }
             }
         }
