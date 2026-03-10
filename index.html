@@ -1492,8 +1492,9 @@
                     saveWinRecord(winner);
                 }
                 
-                document.getElementById('winnerText').textContent = 
-                    `${winner} wins with ${Math.max(gameState.player1.score, gameState.player2.score).toLocaleString()} points!`;
+                document.getElementById('winnerText').textContent =
+                    loser ? `${winner} wins with ${Math.max(gameState.player1.score, gameState.player2.score).toLocaleString()} points!`
+                           : `It's a tie! Both players have ${gameState.player1.score.toLocaleString()} points.`;
                     
                 setTimeout(() => {
                     document.getElementById('winner').style.display = 'block';
