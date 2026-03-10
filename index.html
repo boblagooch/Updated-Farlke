@@ -1387,6 +1387,7 @@
             
             // Switch back to this player's turn
             gameState.currentPlayer = player;
+            gameState.turnNumber--;
             
             // Update history display
             const historyContent = document.getElementById('historyContent');
