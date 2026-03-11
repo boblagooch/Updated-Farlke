@@ -23,7 +23,7 @@
         }
         
         body.dark-mode {
-            --bg-gradient: #000000;
+            --bg-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 100%);
             --card-bg: #1a1a1a;
             --text-color: #e0e0e0;
             --border-color: #444;
@@ -113,6 +113,8 @@
             font-size: 1.5em;
             cursor: pointer;
             padding: 5px;
+            min-width: 44px;
+            min-height: 44px;
         }
         
         .setup {
@@ -272,10 +274,10 @@
             position: absolute;
             top: -20px;
             right: -50px;
-            font-size: 0.5em;
+            font-size: 0.65em;
             color: #27ae60;
             font-weight: bold;
-            animation: floatUp 1s ease-out forwards;
+            animation: floatUp 1.5s ease-out forwards;
             pointer-events: none;
         }
         
@@ -380,7 +382,7 @@
         .undo-btn {
             background: #f39c12;
             margin-bottom: 8px;
-            min-height: 35px;
+            min-height: 44px;
             font-size: 14px;
             padding: 10px 15px;
         }
@@ -558,7 +560,8 @@
             border: none;
             padding: 8px 16px;
             border-radius: 8px;
-            font-size: 0.7em;
+            font-size: 0.85em;
+            min-height: 44px;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -691,8 +694,9 @@
             }
             
             .quit-btn {
-                font-size: 0.8em;
-                padding: 6px 12px;
+                font-size: 0.85em;
+                padding: 8px 14px;
+                min-height: 44px;
             }
             
             .score {
@@ -785,7 +789,7 @@
             }
             
             .undo-btn {
-                min-height: 30px;
+                min-height: 44px;
                 padding: 8px 12px;
                 font-size: 12px;
             }
@@ -1142,7 +1146,7 @@
             animation.textContent = `+${amount}`;
             scoreElement.appendChild(animation);
             
-            setTimeout(() => animation.remove(), 1000);
+            setTimeout(() => animation.remove(), 1500);
         }
 
         function updateDisplay() {
@@ -1347,7 +1351,6 @@
                 gameState[`player${player}`].farkles = 0; // Reset after penalty
                 document.getElementById(`player${player}LastAction`).textContent = `Last: Farkle x3 = -1000 points!`;
                 updateHistory(player, 'farkle3');
-                alert(`${gameState[`player${player}`].name} got 3 farkles in a row! -1000 points!`);
             } else {
                 document.getElementById(`player${player}LastAction`).textContent = `Last: Farkle (${gameState[`player${player}`].farkles}/3)`;
                 updateHistory(player, 'farkle');
