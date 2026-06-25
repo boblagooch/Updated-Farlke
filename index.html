@@ -1557,15 +1557,11 @@
         }
         
         function quitGame() {
-            if (confirm(`Are you sure you want to quit the game?\n\n${gameState.player1.name}: ${gameState.player1.score.toLocaleString()} points\n${gameState.player2.name}: ${gameState.player2.score.toLocaleString()} points\n\nThis game will not be saved.`)) {
-                
-                // Clear saved game state
-                try {
-                    localStorage.removeItem('farkle_gameState');
-                } catch(e) {
-                    // localStorage might be blocked
-                }
-                
+            if (confirm(`Are you sure you want to quit the game?\n\n${gameState.player1.name}: ${gameState.player1.score.toLocaleString()} points\n${gameState.player2.name}: ${gameState.player2.score.toLocaleString()} points\n\nYour progress is saved. You can resume this game later.`)) {
+
+                // Save current game before resetting so Resume works
+                saveGameState();
+
                 // Reset to setup
                 gameState = {
                     player1: { name: '', score: 0, farkles: 0, hasOpeningScore: false },
@@ -1590,7 +1586,7 @@
                 document.getElementById('openingToggle').classList.remove('active');
                 document.getElementById('player1LastAction').textContent = '';
                 document.getElementById('player2LastAction').textContent = '';
-                document.getElementById('resumeBtn').style.display = 'none';
+                document.getElementById('resumeBtn').style.display = 'block';
                 
                 // Clear history
                 document.getElementById('historyContent').innerHTML = '';
